@@ -30,6 +30,7 @@ public class BookController {
 	
 	@PostMapping("addBook")
 	public ResponseEntity<Book> addBooks( @RequestBody Book book){
+		System.out.println("insert");
 		return new ResponseEntity<Book>(service.addBookService(book), HttpStatus.CREATED);
 		
 	}
