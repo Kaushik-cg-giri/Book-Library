@@ -24,7 +24,8 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("books")
 public class BookController {
-	
+
+	private static final Logger logger; 
 	@Autowired
 	private BookService service;
 	
