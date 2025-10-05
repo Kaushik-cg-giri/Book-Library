@@ -37,13 +37,15 @@ public class BookService {
 
 	public Book fetchBookById(long id) {
 
-		Book book = repository.findById(id).orElseThrow(()->  new BookNotFoundException("No Books are present in Library"));
+		Book book = repository.findById(id)
+								.orElseThrow(()->  new BookNotFoundException("No Books are present in Library"));
 		return book;
 	}
 
 	public Book updateBookById(long id,Book book) {
 
-		Book bookId = repository.findById(id).orElseThrow(()->new BookNotFoundException("No Book are present in this id"));
+		Book bookId = repository.findById(id)
+								.orElseThrow(()->new BookNotFoundException("No Book are present in this id"));
 		
 		bookId.setAuthor(book.getAuthor());
 		bookId.setTittle(book.getTittle());
