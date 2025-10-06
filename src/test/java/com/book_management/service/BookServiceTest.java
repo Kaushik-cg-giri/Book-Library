@@ -12,12 +12,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.book_management.entity.Book;
 import com.book_management.repository.BookRepository;
@@ -134,5 +138,43 @@ public class BookServiceTest {
 		
 		//verify that repository that calls once
 		verify(bookRepository,times(1)).delete(book);
+	}
+	
+	@Test
+	public void testFetchBookByAuthor_valid() {
+		
+		//define mock behavior using when
+		when(bookRepository.findByAuthor("MT")).thenReturn(Optional.of(book));
+		
+		//call the service method
+		Book book = bookService.fetchBookByAuthor("MT");
+		
+		//assert and conform
+		assertEquals("MT", book.getAuthor());
+		
+		//verify that repository calls once
+		verify(bookRepository, times(1)).findByAuthor("MT");
+	}
+	
+	@Test
+	public void testGetAllBooksSorted_valid() {
+		Date date = new Date(1991,05,01);
+		List<Book> listBook = Arrays.asList(book,new Book(101,"ormakal","MT vasudevan",date,"periodic"));
+		
+		//Define before passing  to mock behavior
+		Page<Book> page = new PageImpl<>(listBook);
+		
+		//define mock behavior using when
+		when(bookRepository.findAll(any(Pageable.class))).thenReturn(page);
+		
+		//call the service method
+		Page<Book> afterPagination =  bookService.getAllBooksSorted(0, 1,"tittle","asc");
+		
+		//assert and conform
+		assertNotNull(afterPagination);
+		assertEquals(2, afterPagination.getNumberOfElements());
+		
+		//verify that repository calls once 
+		verify(bookRepository,times(1)).findAll(any(Pageable.class));
 	}
 }
