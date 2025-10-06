@@ -58,7 +58,8 @@ public class BookService {
 
 	public String deleteBookById(long id) {
 		
-		Book book = repository.findById(id).orElseThrow(()->  new BookNotFoundException("No Books are present in this id"));
+		Book book = repository.findById(id)
+								.orElseThrow(()->  new BookNotFoundException("No Books are present in this id"));
 		
 		if(book!=null) {
 			repository.delete(book);
@@ -72,10 +73,9 @@ public class BookService {
 
 	public Book fetchBookByAuthor(String author) {
 
-		Book book = repository.findByAuthor(author);
-		if(book==null) {
-			throw new BookNotFoundException("No Books are presten in this author name");
-		}
+		Book book = repository.findByAuthor(author)
+								.orElseThrow(() ->  new BookNotFoundException("No Books are presten in this author name"));
+
 		return book;
 	}
 
