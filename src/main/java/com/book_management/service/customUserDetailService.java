@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.book_management.entity.Users;
@@ -15,13 +16,16 @@ import com.book_management.repository.UserRepository;
   
   @Autowired 
   private UserRepository userRepository;
+  
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 	  Users user = userRepository.findByUsersName(username)
 			  					.orElseThrow(()->  new UsernameNotFoundException("User not found in DB"));
-	  return User.builder()
+	  
+	  
+	  return User.withDefaultPasswordEncoder()
 			  	.username(user.getusersName())
 			  	.password(user.getusersPswrd())
 			  	.roles(user.getusersRole())
