@@ -25,7 +25,7 @@ import com.book_management.repository.UserRepository;
 			  					.orElseThrow(()->  new UsernameNotFoundException("User not found in DB"));
 	  
 	  
-	  return User.withDefaultPasswordEncoder()
+	  return User.builder()
 			  	.username(user.getusersName())
 			  	.password(user.getusersPswrd())
 			  	.roles(user.getusersRole())
